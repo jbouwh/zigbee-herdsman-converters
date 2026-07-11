@@ -689,4 +689,6 @@ export const presetsZosung = {
     learned_ir_code: () => e.text("learned_ir_code", ea.STATE).withDescription("The IR code learned by device"),
     learned_ir_timings: () => e.text("learned_ir_timings", ea.STATE).withDescription("The IR timings learned by device"),
     ir_code_to_send: () => e.text("ir_code_to_send", ea.SET).withDescription("The IR code or timings to send by device"),
+    emittter: () => e.infrared("ir_code_to_send", ea.SET, "emitter").withDescription("Infrared emitter entity"),
+    receiver: () => e.infrared("learned_ir_timings", ea.SET, "receiver").withDescription("Infrared receiver entity"),
 };

@@ -49,8 +49,9 @@ export type Expose =
     | exposes.Cover
     | exposes.Climate
     | exposes.Fan
-    | exposes.Text;
-export type Option = exposes.Numeric | exposes.Binary | exposes.Composite | exposes.Enum | exposes.List | exposes.Text;
+    | exposes.Text
+    | exposes.Infrared;
+export type Option = exposes.Numeric | exposes.Binary | exposes.Composite | exposes.Enum | exposes.List | exposes.Text | exposes.Infrared;
 export interface Fingerprint {
     applicationVersion?: number;
     manufacturerID?: number;

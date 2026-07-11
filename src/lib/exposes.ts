@@ -13,7 +13,7 @@ import {thermostatSetpointChangeSource} from "./constants";
 import type {Access, LevelConfigFeatures, Range} from "./types";
 import {getLabelFromName} from "./utils";
 
-export type Feature = Numeric | Binary | Enum | Composite | List | Text;
+export type Feature = Numeric | Binary | Enum | Composite | List | Text | Infrared;
 export interface HomeAssistant {
     type?: "valve";
     entityCategory?: "config" | "diagnostic";
@@ -353,6 +353,30 @@ export class Text extends Base {
         return clone;
     }
 }
+
+type InfraredSchema = "emitter" | "receiver";
+
+export class Infrared extends Base {
+    type = "text" as const;
+    property = "";
+    schema: InfraredSchema;
+
+    constructor(name: string, access: number, schema: InfraredSchema) {
+        super();
+        this.schema = schema;
+        this.name = name;
+        this.label = getLabelFromName(name);
+        this.property = name;
+        this.access = access;
+    }
+
+    clone(): Infrared {
+        const clone = new Infrared(this.name, this.access, this.schema);
+        this.copy(clone);
+        return clone;
+    }
+}
+
 
 export class Composite extends Base {
     type = "composite" as const;
@@ -1097,6 +1121,7 @@ export const presets = {
     humidity: () => new Numeric("humidity", access.STATE).withUnit("%").withDescription("Measured relative humidity"),
     illuminance: () => new Numeric("illuminance", access.STATE).withDescription("Measured illuminance").withUnit("lx"),
     illuminance_raw: () => new Numeric("illuminance_raw", access.STATE).withDescription("Raw measured illuminance"),
+    infrared: (name: string, access: number, schema: InfraredSchema) => new Infrared(name, access, schema),
     brightness_state: () => new Enum("brightness_state", access.STATE, ["low", "middle", "high", "strong"]).withDescription("Brightness state"),
     keypad_lockout: () =>
         new Enum("keypad_lockout", access.ALL, ["unlock", "lock1", "lock2"]).withDescription("Enables/disables physical input on the device"),
@@ -1414,6 +1439,7 @@ const eLight = () => new Light();
 const eNumeric = (name: string, access: number) => new Numeric(name, access);
 const eSwitch = () => new Switch();
 const eText = (name: string, access: number) => new Text(name, access);
+const eInfrared = (name: string, access: number, schema: InfraredSchema) => new Infrared(name, access, schema);
 const eList = (name: string, access: number, itemType: Numeric | Binary | Composite | Text | Enum) => new List(name, access, itemType);
 const eLock = () => new Lock();
 
@@ -1429,4 +1455,5 @@ export {
     eNumeric as numeric,
     eSwitch as switch,
     eText as text,
+    eInfrared as infrared,
 };

@@ -20,6 +20,7 @@ import {
     Numeric,
     Switch,
     Text,
+    Infrared,
 } from "./lib/exposes";
 import {generateDefinition} from "./lib/generateDefinition";
 import {logger} from "./lib/logger";
@@ -73,6 +74,7 @@ export {
     Option,
     Switch,
     Text,
+    Infrared,
     Tz,
     toZigbee,
 };
